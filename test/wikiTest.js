@@ -5,12 +5,15 @@ var models = require('../models');
 chai.use(spies);
 
 describe('Page Model', function() {
-    var page;
-    beforeEach(function() {
-        page = new models.Page()
-    })
+    
 
+        
     describe('Validations', function() {
+        var page;
+        beforeEach(function() {
+            page = new models.Page()
+        })
+
         it('should err without title', function(done) {
             page.body = "asd";
             page.validate(function(err) {
@@ -37,9 +40,38 @@ describe('Page Model', function() {
     })
 
     describe('Statics', function() {
+
+        // var page;
+        // beforeEach(function() {
+        //     page = new models.Page()
+        // })
+    beforeEach(function(done) {
+        models.Page.create({
+            title: 'foo',
+            body: 'bar',
+            tags: ['catron', 'baron']
+        }, done )
+        })
         describe('findBytag', function() {
-            xit('should get pages with the search tag', function() {})
-            xit('should not get pages without the search tag', function() {})
+            xit('should get pages with the search tag', function(done) {
+                // page.title = "title";
+                // page.body = "body";
+                // page.tags = ['asd', 'dsa'];
+                models.Page.findByTag('baron', function(err, pages) {
+                    expect(pages).to.have.lengthOf(1)
+                    done()
+                })
+            })
+
+            it('should not get pages without the search tag', function(done) {
+                // page.title = "title";
+                // page.body = "body";
+                // page.tags = ["asd", "dsa"];
+                models.Page.findByTag('zordon', function(err, pages) {
+                    expect(pages).to.have.lengthOf(0)
+                    done()
+                })
+            })
         })
     })
 
